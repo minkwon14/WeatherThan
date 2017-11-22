@@ -33,7 +33,13 @@ class CurrentWeather {
     // Initialize weather dictionary
     init(weatherDictionary: [String : Any]){
         
-        temperature = weatherDictionary[WeatherKeys.temperature] as? Int
+        // temperature = weatherDictionary[WeatherKeys.temperature] as? Int
+        
+        if let temperatureDouble = weatherDictionary[WeatherKeys.temperature] as? Double {
+            temperature = Int(temperatureDouble)
+        } else {
+            temperature = nil
+        }
         
         if let humidityDouble = weatherDictionary[WeatherKeys.humidity] as? Double {
             humidity = Int(humidityDouble * 100)
@@ -60,27 +66,7 @@ class CurrentWeather {
         
     }
     
-    /*
-    "time": 1511319230,
-    "summary": "Clear",
-    "icon": "clear-night",
-    "nearestStormDistance": 2,
-    "nearestStormBearing": 180,
-    "precipIntensity": 0,
-    "precipProbability": 0,
-    "temperature": 60.23,
-    "apparentTemperature": 60.23,
-    "dewPoint": 54.93,
-    "humidity": 0.83,
-    "pressure": 1019.67,
-    "windSpeed": 1.82,
-    "windGust": 4.72,
-    "windBearing": 28,
-    "cloudCover": 0.21,
-    "uvIndex": 0,
-    "visibility": 10,
-    "ozone": 242.89
-    */
+    
     
 }
 

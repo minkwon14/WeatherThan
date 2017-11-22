@@ -11,7 +11,6 @@ import Alamofire
 
 class JSONparser {
     
-    // sample https://api.darksky.net/forecast/bfda986300c149d1785e462815e03e92/37.8267,-122.4233
     let forecastAPIKey: String
     let forecastBaseURL: URL?
     
@@ -21,14 +20,18 @@ class JSONparser {
         forecastBaseURL = URL(string: "https://api.darksky.net/forecast/\(APIKey)")
     }
     
-    func getCurrentWeather(latitude: Double, longitude: Double) -> CurrentWeather {
+    func getCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (CurrentWeather?) -> Void) {
         
         if let forecastURL = URL(string: "\(forecastBaseURL!)/\(latitude),\(longitude)") {
             Alamofire.request(forecastURL).responseJSON(completionHandler: { (response) in
                 if let jsonDictionary = response.result.value as? [String : Any] {
-                    if let currentWeatherDictionary = jsonDictionary["Currently"] as? [String : Any]{
+                    if let currentWeatherDictionary = jsonDictionary["currently"] as? [String : Any]{
                         let currentWeather = CurrentWeather(weatherDictionary: currentWeatherDictionary)
-                        
+                        completion(currentWeather)
+                        print ("Parser has been worked")
+                    } else {
+                        completion(nil)
+                        print ("Parser failed")
                     }
                 }
             })
